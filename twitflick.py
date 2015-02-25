@@ -3,6 +3,8 @@ import twitter
 import sentiment
 
 from utils import avg
+from utils import remap
+
 from itertools import imap
 
 def twitflick():
@@ -11,10 +13,10 @@ def twitflick():
 
     # find some tweets about those movies
     movie_tweets = imap(twitter.fuzzy_find, movie_titles)
-    movie_tweet_text = imap( imap(lambda x: x.text, tweets), movie_tweets ) 
+    movie_tweet_text = ((tweet.text for tweet in tweets) for tweets in movie_tweets)
 
     # find the average sentiment of those tweets
-    movie_sentiments = imap( imap(sentiment.sentiment, tweet_texts), movie_tweet_text)
+    movie_sentiments = ([sentiment.sentiment(tweet) for tweet in tweets] for tweets in movie_tweet_text)
     avg_movie_sentiments = imap(avg, movie_sentiments)
 
     # remap the sentiments to a movie rating
@@ -23,19 +25,19 @@ def twitflick():
     movie_title_ratings = zip(movie_titles, movie_ratings)
     print movie_title_ratings
 
-def sentiment_to_rating(sentiment):
+def sentiment_to_rating(sent):
     """ converts a sentiment to a movie rating
     >>> sentiment_to_rating(1)
-    5
+    10
     >>> sentiment_to_rating(-1)
     0
     >>> sentiment_to_rating(0)
-    3
+    5
     """
     rating_min = 0
-    rating_max = 5
-    rating = remap(sentiment, sentiment.min, sentiment.max, rating_min, rating_max)
-    return round(rating)
+    rating_max = 10
+    rating = remap(sent, sentiment.min(), sentiment.max(), rating_min, rating_max)
+    return rating
 
 if __name__ == "__main__":
     twitflick()
