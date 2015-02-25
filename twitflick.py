@@ -1,4 +1,4 @@
-import imdb
+import movie
 import twitter
 import sentiment
 
@@ -7,7 +7,7 @@ from itertools import imap
 
 def twitflick():
     # lookup some new movies
-    movie_titles = imdb.box_office_titles()    
+    movie_titles = movie.top_box_office_titles()    
 
     # find some tweets about those movies
     movie_tweets = imap(twitter.tweets_for, movie_titles)
