@@ -10,7 +10,7 @@ def twitflick():
     movie_titles = movie.top_box_office_titles()    
 
     # find some tweets about those movies
-    movie_tweets = imap(twitter.tweets_for, movie_titles)
+    movie_tweets = imap(twitter.fuzzy_find, movie_titles)
     movie_tweet_text = imap( imap(lambda x: x.text, tweets), movie_tweets ) 
 
     # find the average sentiment of those tweets
