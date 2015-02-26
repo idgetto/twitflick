@@ -7,11 +7,20 @@ def fuzzy_find(thing):
 
     tweets = []
     for item in fuzzy_things:
-        tweets += t.search(item)
+        new_tweets = t.search(item, count=50, throttle=2)
+        for tweet in new_tweets:
+            ids = map(lambda x: x.id, tweets)
+            if ids.count(tweet.id) == 0:
+                tweets.append(tweet)
 
     return tweets
 
 def fuzzy_list(thing):
+    """ make a list of strings like thing
+    >>> fuzzy_list('Harry Potter')
+    ['Harry Potter', 'HARRY POTTER', 'harry potter', 'Harry potter', 'Harry Potter', 'HARRYPOTTER', 'harrypotter', 'Harrypotter']
+    """
+
     things = []
 
     things.append(thing)
@@ -24,9 +33,9 @@ def fuzzy_list(thing):
     things.append(nospace.upper())
     things.append(nospace.lower())
     things.append(nospace.capitalize())
-    things.append(nospace.title())
 
     return things
 
 if __name__ == "__main__":
-    print fuzzy_find('nyan cat')
+    import doctest
+    doctest.testmod()
