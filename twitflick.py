@@ -7,7 +7,7 @@ from utils import remap
 
 from itertools import imap
 
-def twitflick():
+def twitflick(): #Try including a docstring here. Have the function definition, function input, function output
     # lookup some new movies
     print("looking up titles")
     movie_titles = movie.top_box_office_titles()    
@@ -30,7 +30,7 @@ def twitflick():
     print movie_title_ratings
 
 def sentiment_to_rating(sent):
-    """ converts a sentiment to a movie rating
+    """ converts a sentiment to a movie rating #Unit testing is cool!
     >>> sentiment_to_rating(1)
     100.0
     >>> sentiment_to_rating(-1)
